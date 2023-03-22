@@ -1,0 +1,85 @@
+/* Create table about movie actors and their details*/
+
+CREATE TABLE actors (id INTEGER PRIMARY KEY, 
+    first_name TEXT,
+    last_name TEXT,
+    birthplace TEXT,
+    age INTEGER,
+    gender TEXT);
+    
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Steve", "Carell", "Massachusets",60, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Paul", "Rudd", "New Jersey", 53, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Ben", "Stiller", "New York", 54, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Owen", "Wilson", "Texas", 57, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Jim", "Carrey", "Canada", 61, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Adam", "Sandler", "New York", 56, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Amy", "Schumer", "New York", 41, "female");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Chris", "Rock", "South Carolina", 58, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Eddie", "Murphy", "New York", 61, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Will", "Arnette", "Canada", 52, "male");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Jennifer", "Lawrence", "Kentucky", 32, "female");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Reese", "Witherspoon", "Louisiana", 47, "female");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Kate", "Winslet", "England", 47, "female");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Daisy", "Ridley", "England", 30, "female");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Zoe", "Saldana", "New Jersey", 44, "female");
+INSERT into actors (first_name, last_name, birthplace, age, gender) VALUES ("Adam", "Driver", "California", 39, "male");
+
+/* Create a table of movies these actors have been in. */
+
+CREATE TABLE movies (id INTEGER PRIMARY KEY,
+    movie_id INTEGER,
+    title TEXT);
+    
+INSERT into movies (movie_id, title) VALUES ("1", "40_year_old_virgin");
+INSERT into movies (movie_id, title) VALUES ("2", "Clueless");
+INSERT into movies (movie_id, title) VALUES ("3", "Dodgeball");
+INSERT into movies (movie_id, title) VALUES ("4", "Wedding_Crashers");
+INSERT into movies (movie_id, title) VALUES ("5", "Cable Guy");
+INSERT into movies (movie_id, title) VALUES ("6", "Billy Madison");
+INSERT into movies (movie_id, title) VALUES ("7", "Trainwreck");
+INSERT into movies (movie_id, title) VALUES ("8", "Madagascar");
+INSERT into movies (movie_id, title) VALUES ("9", "Shrek");
+INSERT into movies (movie_id, title) VALUES ("10", "Blades_of_glory");
+INSERT into movies (movie_id, title) VALUES ("11", "Hunger_Games");
+INSERT into movies (movie_id, title) VALUES ("12", "Legally Blonde");
+INSERT into movies (movie_id, title) VALUES ("13", "Titanic");
+INSERT into movies (movie_id, title) VALUES ("14", "Rise_of_Skywalker");
+INSERT into movies (movie_id, title) VALUES ("15", "Avatar");
+INSERT into movies (movie_id, title) VALUES ("16", "Marriage_Story");
+
+/* Create a table that pairs up actors who have worked together on another movie */
+
+CREATE TABLE co_starred_with (id INTEGER PRIMARY KEY,
+    co_star1_id INTEGER,
+    co_star2_id INTEGER);
+    
+INSERT into co_starred_with (co_star1_id, co_star2_id) VALUES (1, 2);
+INSERT into co_starred_with (co_star1_id, co_star2_id) VALUES (3, 4);
+INSERT into co_starred_with (co_star1_id, co_star2_id) VALUES (14, 16);
+INSERT into co_starred_with (co_star1_id, co_star2_id) VALUES (6, 12);
+
+
+ /* Show which male actors are from New York */
+
+SELECT first_name, last_name, birthplace
+    FROM actors
+    WHERE birthplace = "New York" and gender = "male";
+ 
+/* use JOIN to display a table showing actor's first and last name with their movie credits */
+
+SELECT a.first_name, a.last_name, m.title
+    FROM actors as a
+    JOIN movies as m
+    ON a.id = m.movie_id;
+
+    
+/* Show which movies share actors that are co-stars on another movie */
+
+SELECT a.title, b.title
+    FROM co_starred_with
+    JOIN movies a
+    ON co_starred_with.co_star1_id = a.id
+    JOIN movies b
+    ON co_starred_with.co_star2_id = b.id;
+
+
