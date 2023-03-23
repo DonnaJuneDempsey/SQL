@@ -1,0 +1,26 @@
+/* What does the app's SQL look like? */
+CREATE TABLE wordle (id INTEGER PRIMARY KEY,
+    games_played INTEGER,
+    win_percent INTEGER,
+    current_streak INTEGER,
+    max_streak INTEGER,
+    avg_guesses INTEGER,
+    player_level TEXT);
+    
+INSERT INTO wordle VALUES (1, 424, 97, 29, 129, 4, "expert");
+INSERT INTO wordle VALUES (2, 50, 93, 5, 10, 5, "novice");
+INSERT INTO wordle VALUES (3, 300, 98, 64, 70, 4, "adv_beginner");
+INSERT INTO wordle VALUES (4, 555, 99, 140, 401, 2, "maniac");
+INSERT INTO wordle VALUES (5, 268, 95, 77, 78, 5, "adv_beginner");
+INSERT INTO wordle VALUES (6, 10, 90, 6, 3, 6, "novice");
+
+SELECT * FROM wordle;
+
+/* use an UPDATE to emulate what happens when you edit data in the app */
+UPDATE wordle SET player_level = "competent" where player_level = "adv_beginner";
+SELECT * FROM wordle;
+
+/* Use a DELETE to emulate what happens when you delete data in the app. */
+DELETE FROM wordle WHERE id = 2;
+SELECT * FROM wordle;
+
