@@ -63,4 +63,35 @@ WHERE f.Quantity > 2
 AND length(orderid) = 6
 AND orderid <> 'Order ID';
 
+/* which orders were placed in February between 02/13/19 and 02/18/19? */
+SELECT orderdate
+FROM BIT_DB.FebSales
+WHERE orderdate BETWEEN '02/13/19 00:00' AND '02/18/19 00:00';
 
+/* What loaction placed an order in February on 02/18/19 at 01:35? */
+SELECT location
+FROM BIT_DB.FebSales
+WHERE orderdate = '02/18/19 01:35';
+
+
+/* What were total sales on the day of 02/18/19? */
+SELECT SUM(quantity)
+FROM BIT_DB.FebSales
+WHERE orderdate LIKE '02/18/19%';
+
+
+/* what were all types of battery products sold in Feb? */
+SELECT distinct Product
+FROM BIT_DB.FebSales
+WHERE Product like '%Batteries%';
+
+/* what products were sold in Feb that ended in .99? */
+SELECT distinct Product, Price
+FROM BIT_DB.FebSales 
+WHERE Price like '%.99';
+
+/* list all the products sold in Los Angeles in Feb and include how many of each were sold */
+SELECT Product, SUM(Quantity)
+FROM BIT_DB.FebSales
+WHERE location like '%Los Angeles%'
+GROUP BY Product;
