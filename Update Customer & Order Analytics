@@ -1,0 +1,66 @@
+/* show all customers with 6 character order id and does not list as 'Order ID' to fix messy/incorrect data. */
+SELECT * FROM BIT_DB.customers
+WHERE length(order_id) = 6
+AND order_id <> 'Order ID';
+
+/* #1 how many orders were placed in January? */
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID';
+
+/* #2 how many of those orders placed in Jan were for an iphone? */
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE product = 'iPhone'
+AND length(orderID) = 6
+AND orderID <> 'Order ID';
+
+/* #3 select the customer acct numbers for all the orders that were placed in feb */
+SELECT DISTINCT acctnum
+FROM BIT_DB.customers c
+INNER JOIN BIT_DB.FebSales f
+ON c.order_id = f.orderID
+WHERE length(orderid) = 6
+AND orderid <> 'Order ID';
+
+/* #4 which product was the cheapest one sold in January and what was the price? */
+SELECT DISTINCT product, MIN(price) 
+FROM BIT_DB.Jansales
+GROUP BY product, price
+ORDER BY price ASC
+LIMIT 1;
+
+
+/* #5 what is the total revenue for each product sold in january? (revenue calculated with number of products sold and the price of the prodcuts) */
+SELECT sum(Quantity)*price as revenue, product
+FROM BIT_DB.JanSales
+GROUP BY product;
+
+SELECT orderid, quantity, price, product
+FROM BIT_DB.JanSales;
+
+SELECT SUM(quantity), price, product
+FROM BIT_DB.Jansales
+GROUP BY product, price;
+
+SELECT SUM(quantity)*price as revenue, product
+FROM BIT_DB.Jansales
+GROUP BY product;
+
+/* which products were sold in February at 548 Lincoln St., Seattle, WA 98101, how many of each were sold and what was the total revenuw? */
+SELECT product, SUM(quantity), SUM(quantity)*price as revenue
+FROM BIT_DB.Febsales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+/* how many customers ordered moer than 2 products at a time in February, and what was the average amount spent for those customers? */
+SELECT count(distinct c.acctnum), AVG(quantity*price)
+FROM BIT_DB.FebSales f
+LEFT JOIN BIT_DB.customers c
+ON f.orderid = c.order_id
+WHERE f.Quantity > 2
+AND length(orderid) = 6
+AND orderid <> 'Order ID';
+
+
