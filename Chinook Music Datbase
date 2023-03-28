@@ -109,7 +109,90 @@ JOIN chinook.genres g ON t.GenreId = g.GenreId
 WHERE t.GenreId = 4
 AND i.BillingCity = 'Boston';
 
+/* #17 List all tracks by The Police */
+select * 
+from chinook.tracks
+where albumid = 215;
+
+/* #18 List all the tracks by the Police that are included on a playlist and which playlist. */
+select p.playlistid, p.name, a.title, t.name
+from chinook.playlist_track pt
+join chinook.playlists p ON p.playlistid = pt.playlistid
+join chinook.tracks t ON t.trackid = pt.trackid
+join chinook.albums a ON a.albumid = t.albumid
+where a.albumid = 215
+order by p.name;
+
+/* #19 how many tracks by the Poilce are on the 90's Music playlist? */
+
+/* #20 List all tracks by The Police */
+select * 
+from chinook.tracks
+where albumid = 215;
+
+/* #21 List all the tracks by the Police that are included on a playlist and which playlist. */
+select p.playlistid, p.name, a.title, t.name
+from chinook.playlist_track pt
+join chinook.playlists p ON p.playlistid = pt.playlistid
+join chinook.tracks t ON t.trackid = pt.trackid
+join chinook.albums a ON a.albumid = t.albumid
+where a.albumid = 215
+order by p.name;
+
+/* #22 how many tracks by the Poilce are on the 90's Music playlist? */
+
 /* List all tracks by The Police */
 select * 
 from chinook.tracks
 where albumid = 215;
+
+/* #23 List all the tracks by the Police that are included on a playlist and which playlist. */
+select p.playlistid, p.name, a.title, t.name
+from chinook.playlist_track pt
+join chinook.playlists p ON p.playlistid = pt.playlistid
+join chinook.tracks t ON t.trackid = pt.trackid
+join chinook.albums a ON a.albumid = t.albumid
+where a.albumid = 215
+order by p.name;
+
+/* #24 How many tracks are on the 90's music playlist by the Police?*/
+select COUNT(*) as "Number of Police tracks on 90's Music Playlist"
+from chinook.playlist_track pt
+join chinook.playlists p ON p.playlistid = pt.playlistid
+join chinook.tracks t ON t.trackid = pt.trackid
+join chinook.albums a ON a.albumid = t.albumid
+where a.albumid = 215
+and p.name LIKE '%90%'
+order by a.albumid;
+
+/* #25 What is the length of each pop song ?* */
+select t.name, t.Milliseconds 
+from chinook.tracks t
+join chinook.genres g ON t.Genreid = g.Genreid
+where g.genreid = 9;
+
+/* #26 What is the longest pop song and what is the artist name? */
+select t.name as "Track Name", art.name as "Artist Name", t.Milliseconds 
+from chinook.tracks t
+join chinook.genres g ON t.Genreid = g.Genreid
+join chinook.albums a ON a.albumid = t.albumid
+join chinook.artists art on art.artistid = a.artistid
+where g.genreid = 9
+order by t.milliseconds DESC
+LIMIT 1;
+
+/* #27 how many albums does Iron Maiden have? */
+select count(*) as "Number of Iron Mainden albums"
+from chinook.albums
+where artistid = 90;
+
+/* #28 List the Iron Maiden tracks are over 19,000 milliseconds and under 4,000,000 bytes? */
+select art.name as "Artist Name", t.name as "Track Name", t.milliseconds, t.bytes
+from chinook.tracks t
+JOIN chinook.albums a ON t.albumid = a.albumid
+JOIN chinook.artists art ON a.artistid = art.artistid
+where art.artistid = 90
+and t.milliseconds > 19000
+and t.bytes < 4000000
+group by t.name;
+
