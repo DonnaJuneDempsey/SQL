@@ -1,0 +1,115 @@
+/* #1 Show Customers (their full names, customer ID, and country) who are not in the US.
+ (Hint: != or <> can be used to say "is not equal to").*/
+select FirstName, LastName, CustomerID, Country
+from chinook.customers
+where Country <> 'US';
+
+/* #2 show only customers from Brazil */
+select * 
+from chinook.customers
+where Country = 'Brazil';
+
+/* #3 Find the Invoices of customers who are from Brazil. 
+The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country. */
+select cus.FirstName, cus.LastName, inv.Invoiceid, inv.InvoiceDate, inv.BillingCountry
+from chinook.invoices as inv
+LEFT JOIN chinook.customers as cus
+ON inv.CustomerId = cus.CustomerId
+where inv.BillingCountry = "Brazil";
+
+/* #4 Show the Employees who are Sales Agents. */
+select * from chinook.employees
+where Title = "Sales Support Agent";
+
+/* #5 Find a unique/distinct list of billing countries from the Invoice table. */
+select DISTINCT BillingCountry
+from chinook.invoices;
+
+/* #6 Provide a query that shows the invoices associated with each sales agent. 
+The resulting table should include the Sales Agent's full name.*/
+
+select emp.FirstName, emp.Lastname, inv.InvoiceId
+from chinook.employees emp
+JOIN chinook.customers cust 
+ON emp.EmployeeId = cust.CustomerId
+JOIN chinook.invoices inv
+ON inv.CustomerId = cust.CustomerId;
+
+/* #7 Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers. */
+select cust.FirstName, cust.LastName, cust.Country,emp.FirstName, emp.LastName, inv.total
+from chinook.employees emp
+JOIN chinook.customers cust 
+ON emp.EmployeeId = cust.CustomerId
+JOIN chinook.invoices inv
+ON inv.CustomerId = cust.CustomerId;
+
+/* #8 How many Invoices were there in 2009? */
+select count(*)
+from chinook.invoices
+where InvoiceDate between '2009-01-01' and '2009-12-31';
+
+/* #9 What are the total sales for 2009? */
+select SUM(Total) as "Total Sales for 2009"
+from chinook.invoices
+where InvoiceDate between '2009-01-01' and '2009-12-31';
+ 
+/* #10 Write a query that includes the purchased track name with each invoice line ID.*/
+select tracks.Name, invoice_items.InvoiceLineId
+from chinook.tracks 
+JOIN chinook.invoice_items ON tracks.TrackId = invoice_items.TrackId;
+
+/* 11 Write a query that includes the purchased track name AND artist name with each invoice line ID. */
+select tracks.Name as Track, invoice_items.InvoiceLineId, artists.Name as Artist
+from chinook.invoice_items 
+LEFT JOIN chinook.tracks ON tracks.TrackId = invoice_items.TrackId
+INNER JOIN chinook.albums ON tracks.Albumid = albums.Albumid
+LEFT JOIN chinook.artists ON albums.ArtistID = artists.ArtistID;
+
+/* #12 Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre. */
+select t.name as "Track Name", a.Title as "Album Name", m.Name as "Media Type" , g.Name as "Genre"
+from chinook.tracks t
+JOIN chinook.albums a ON t.AlbumId = a.AlbumID
+JOIN chinook.media_types m ON t.MediaTypeId = m.MediaTypeId
+JOIN chinook.genres g ON t.GenreId = g.GenreId;
+
+/* #13 Show the total sales made by each sales agent. */
+select e.LastName, e.FirstName, ROUND(SUM(i.Total), 2) as "Total Sales"
+from chinook.invoices i
+JOIN chinook.customers c ON i.CustomerId = c.CustomerId
+JOIN chinook.employees e ON c.SupportRepId = e.EmployeeId
+where e.Title = "Sales Support Agent"
+GROUP BY e.LastName;
+
+/* #14 Which sales agent made the most dollars in sales in 2009? */
+select e.LastName, e.FirstName, ROUND(SUM(i.Total),2) as "Total Sales"
+from chinook.employees e
+JOIN chinook.customers c ON c.SupportRepId = e.Employeeid
+JOIN chinook.invoices i ON i.CustomerId = c.CustomerId
+where e.Title = "Sales Support Agent"
+AND i.InvoiceDate LIKE '2009%'
+group by e.Firstname
+order by (ROUND(SUM(i.Total),2)) desc
+Limit 1;
+
+/* #15 Display the sales Alternative & Punk tracks by city */
+select i.BillingCity, t.Name as 'Track Name', i.total 
+from chinook.invoices i
+JOIN chinook.invoice_items item ON i.InvoiceID = item.InvoiceID
+JOIN chinook.tracks t ON item.TrackId = t.TrackId
+JOIN chinook.genres g ON t.GenreId = g.GenreId
+WHERE t.GenreId = 4
+ORDER BY i.BillingCity;
+
+/* #16 What are the total sales of Alt and Punk songs in Boston? */
+select i.BillingCity, ROUND(SUM(Total), 2) as 'Total Alt Punk Sales'
+from chinook.invoices i
+JOIN chinook.invoice_items item ON i.InvoiceID = item.InvoiceID
+JOIN chinook.tracks t ON item.TrackId = t.TrackId
+JOIN chinook.genres g ON t.GenreId = g.GenreId
+WHERE t.GenreId = 4
+AND i.BillingCity = 'Boston';
+
+/* List all tracks by The Police */
+select * 
+from chinook.tracks
+where albumid = 215;
