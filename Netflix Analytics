@@ -1,5 +1,3 @@
--- Example query (PostgreSQL)
-SELECT * FROM "CharlotteChaze/BreakIntoTech"."netflix_people";
 
 /* show the directors, the title of their movies and the duration*/
 SELECT people.show_id, people.director, titles.title, titles.duration
@@ -37,12 +35,3 @@ LIMIT 2;
 
 
 
-
-
--- Tips:
--- (*) Table names containing punctuation, capitalization, or spaces should be
---     quoted, e.g. "Test Data.csv".
--- (*) Add more data by using the Upload Data button.
--- (*) Create additional schemas for namespacing your tables, e.g. "CREATE SCHEMA my_schema;".
--- (*) When querying tables created outside of the public (default) schema,
---     be sure to specify the desired schema, e.g. "SELECT * FROM my_schema."my data.csv";".
