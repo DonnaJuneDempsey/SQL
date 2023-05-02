@@ -1,15 +1,17 @@
-/* #1 Show Customers (their full names, customer ID, and country) who are not in the US.
- (Hint: != or <> can be used to say "is not equal to").*/
+/* #1 Show Customers (their full names, customer ID, and country) who are not in the US. */
+
 select FirstName, LastName, CustomerID, Country
 from chinook.customers
 where Country <> 'US';
 
 /* #2 show only customers from Brazil */
+
 select * 
 from chinook.customers
 where Country = 'Brazil';
 
 /* #3 Find the Invoices of customers who are from Brazil. 
+
 The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country. */
 select cus.FirstName, cus.LastName, inv.Invoiceid, inv.InvoiceDate, inv.BillingCountry
 from chinook.invoices as inv
@@ -18,10 +20,12 @@ ON inv.CustomerId = cus.CustomerId
 where inv.BillingCountry = "Brazil";
 
 /* #4 Show the Employees who are Sales Agents. */
+
 select * from chinook.employees
 where Title = "Sales Support Agent";
 
 /* #5 Find a unique/distinct list of billing countries from the Invoice table. */
+
 select DISTINCT BillingCountry
 from chinook.invoices;
 
@@ -36,6 +40,7 @@ JOIN chinook.invoices inv
 ON inv.CustomerId = cust.CustomerId;
 
 /* #7 Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers. */
+
 select cust.FirstName, cust.LastName, cust.Country,emp.FirstName, emp.LastName, inv.total
 from chinook.employees emp
 JOIN chinook.customers cust 
@@ -49,16 +54,19 @@ from chinook.invoices
 where InvoiceDate between '2009-01-01' and '2009-12-31';
 
 /* #9 What are the total sales for 2009? */
+
 select SUM(Total) as "Total Sales for 2009"
 from chinook.invoices
 where InvoiceDate between '2009-01-01' and '2009-12-31';
  
 /* #10 Write a query that includes the purchased track name with each invoice line ID.*/
+
 select tracks.Name, invoice_items.InvoiceLineId
 from chinook.tracks 
 JOIN chinook.invoice_items ON tracks.TrackId = invoice_items.TrackId;
 
 /* 11 Write a query that includes the purchased track name AND artist name with each invoice line ID. */
+
 select tracks.Name as Track, invoice_items.InvoiceLineId, artists.Name as Artist
 from chinook.invoice_items 
 LEFT JOIN chinook.tracks ON tracks.TrackId = invoice_items.TrackId
@@ -66,6 +74,7 @@ INNER JOIN chinook.albums ON tracks.Albumid = albums.Albumid
 LEFT JOIN chinook.artists ON albums.ArtistID = artists.ArtistID;
 
 /* #12 Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre. */
+
 select t.name as "Track Name", a.Title as "Album Name", m.Name as "Media Type" , g.Name as "Genre"
 from chinook.tracks t
 JOIN chinook.albums a ON t.AlbumId = a.AlbumID
@@ -73,6 +82,7 @@ JOIN chinook.media_types m ON t.MediaTypeId = m.MediaTypeId
 JOIN chinook.genres g ON t.GenreId = g.GenreId;
 
 /* #13 Show the total sales made by each sales agent. */
+
 select e.LastName, e.FirstName, ROUND(SUM(i.Total), 2) as "Total Sales"
 from chinook.invoices i
 JOIN chinook.customers c ON i.CustomerId = c.CustomerId
@@ -81,6 +91,7 @@ where e.Title = "Sales Support Agent"
 GROUP BY e.LastName;
 
 /* #14 Which sales agent made the most dollars in sales in 2009? */
+
 select e.LastName, e.FirstName, ROUND(SUM(i.Total),2) as "Total Sales"
 from chinook.employees e
 JOIN chinook.customers c ON c.SupportRepId = e.Employeeid
@@ -92,6 +103,7 @@ order by (ROUND(SUM(i.Total),2)) desc
 Limit 1;
 
 /* #15 Display the sales Alternative & Punk tracks by city */
+
 select i.BillingCity, t.Name as 'Track Name', i.total 
 from chinook.invoices i
 JOIN chinook.invoice_items item ON i.InvoiceID = item.InvoiceID
@@ -101,6 +113,7 @@ WHERE t.GenreId = 4
 ORDER BY i.BillingCity;
 
 /* #16 What are the total sales of Alt and Punk songs in Boston? */
+
 select i.BillingCity, ROUND(SUM(Total), 2) as 'Total Alt Punk Sales'
 from chinook.invoices i
 JOIN chinook.invoice_items item ON i.InvoiceID = item.InvoiceID
@@ -110,11 +123,13 @@ WHERE t.GenreId = 4
 AND i.BillingCity = 'Boston';
 
 /* #17 List all tracks by The Police */
+
 select * 
 from chinook.tracks
 where albumid = 215;
 
 /* #18 List all the tracks by the Police that are included on a playlist and which playlist. */
+
 select p.playlistid, p.name, a.title, t.name
 from chinook.playlist_track pt
 join chinook.playlists p ON p.playlistid = pt.playlistid
@@ -123,14 +138,14 @@ join chinook.albums a ON a.albumid = t.albumid
 where a.albumid = 215
 order by p.name;
 
-/* #19 how many tracks by the Poilce are on the 90's Music playlist? */
+/* #19 List all tracks by The Police */
 
-/* #20 List all tracks by The Police */
 select * 
 from chinook.tracks
 where albumid = 215;
 
-/* #21 List all the tracks by the Police that are included on a playlist and which playlist. */
+/* #20 List all the tracks by the Police that are included on a playlist and which playlist. */
+
 select p.playlistid, p.name, a.title, t.name
 from chinook.playlist_track pt
 join chinook.playlists p ON p.playlistid = pt.playlistid
@@ -139,14 +154,15 @@ join chinook.albums a ON a.albumid = t.albumid
 where a.albumid = 215
 order by p.name;
 
-/* #22 how many tracks by the Poilce are on the 90's Music playlist? */
 
-/* List all tracks by The Police */
+/* #21 List all tracks by The Police */
+
 select * 
 from chinook.tracks
 where albumid = 215;
 
-/* #23 List all the tracks by the Police that are included on a playlist and which playlist. */
+/* #22 List all the tracks by the Police that are included on a playlist and which playlist. */
+
 select p.playlistid, p.name, a.title, t.name
 from chinook.playlist_track pt
 join chinook.playlists p ON p.playlistid = pt.playlistid
@@ -155,7 +171,8 @@ join chinook.albums a ON a.albumid = t.albumid
 where a.albumid = 215
 order by p.name;
 
-/* #24 How many tracks are on the 90's music playlist by the Police?*/
+/* #23 How many tracks are on the 90's music playlist by the Police? */ 
+
 select COUNT(*) as "Number of Police tracks on 90's Music Playlist"
 from chinook.playlist_track pt
 join chinook.playlists p ON p.playlistid = pt.playlistid
@@ -165,13 +182,15 @@ where a.albumid = 215
 and p.name LIKE '%90%'
 order by a.albumid;
 
-/* #25 What is the length of each pop song ?* */
+/* #24 What is the length of each pop song ?* */
+
 select t.name, t.Milliseconds 
 from chinook.tracks t
 join chinook.genres g ON t.Genreid = g.Genreid
 where g.genreid = 9;
 
-/* #26 What is the longest pop song and what is the artist name? */
+/* #25 What is the longest pop song and what is the artist name? */
+
 select t.name as "Track Name", art.name as "Artist Name", t.Milliseconds 
 from chinook.tracks t
 join chinook.genres g ON t.Genreid = g.Genreid
@@ -181,12 +200,14 @@ where g.genreid = 9
 order by t.milliseconds DESC
 LIMIT 1;
 
-/* #27 how many albums does Iron Maiden have? */
+/* #26 how many albums does Iron Maiden have? */
+
 select count(*) as "Number of Iron Mainden albums"
 from chinook.albums
 where artistid = 90;
 
-/* #28 List the Iron Maiden tracks are over 19,000 milliseconds and under 4,000,000 bytes? */
+/* #27 List the Iron Maiden tracks are over 19,000 milliseconds and under 4,000,000 bytes? */
+
 select art.name as "Artist Name", t.name as "Track Name", t.milliseconds, t.bytes
 from chinook.tracks t
 JOIN chinook.albums a ON t.albumid = a.albumid
