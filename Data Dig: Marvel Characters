@@ -1,9 +1,10 @@
-/* Put your data in here and query it! */
 /* Marvel Heroes and Villains
+
  Based on the website http://marvel.wikia.com/Main_Page
  with popularity data from http://observationdeck.io9.com/something-i-found-marvel-character-popularity-poll-cb-1568108064 
  and power grid data from http://marvel.wikia.com/Power_Grid#Power
  Collected by: https://www.khanacademy.org/profile/Mentrasto/
+ 
  */
 
 CREATE TABLE marvels (ID INTEGER PRIMARY KEY,
@@ -49,27 +50,34 @@ INSERT INTO marvels VALUES(25, "Juggernaut", 76, "Neutral", "Male", 2.87, 862, "
 INSERT INTO marvels VALUES(26, "Professor X", 58, "Good", "Male", 1.83, 86, "EUA", 9, 2, 2, 2, 5, 3);
 
 /* Who are the female marvels from the USA? */
+
 SELECT * FROM marvels WHERE gender = "Female" and hometown = "USA";
 
 /* What is the height order of the marvels? */
+
 SELECT name, height_m FROM marvels WHERE height_m >0 ORDER BY height_m DESC;
 
 /* What is the average weight of a marvel */
+
 SELECT AVG(weight_kg) from marvels;
 
 /* Who are the marvel that come from EUA and are neutral */
+
 SELECT name as neutral_european_marvels from marvels WHERE (hometown = "EUA" AND alignment = "Neutral");
 
 /* Who are the slowest male marvels? */
-SELECT name, speed from marvels WHERE gender = "Male" AND speed < 3;/*
+
+SELECT name, speed from marvels WHERE gender = "Male" AND speed < 3;
 
 /* Who has the best fight skills and what is their popularity? */
+
 SELECT name, fighting_Skills, popularity FROM marvels
     GROUP BY name
     HAVING fighting_Skills > 5
     ORDER BY popularity;
 
 /* What tier of popularity is a marvel? */
+
 SELECT name, CASE
     WHEN popularity <= 25 and popularity >= 1 THEN "Top_Favorites"
     WHEN popularity <= 50 and popularity >= 26 THEN "Solid_classics"
@@ -80,10 +88,12 @@ SELECT name, CASE
     ORDER BY popularity ASC;
 
 /* In our list, how many are bad marvels that are male? */
+
 SELECT COUNT(*) as "Bad_Male_Marvels" from marvels WHERE
     gender = "Male" and alignment = "Bad";
     
 /* Our focus is intelligence, who is elligible to be on our Teaching staff with a minimum of 5 intelligence? */
+
 SELECT name, intelligence, 
     CASE
         WHEN intelligence >= 5 THEN "elligible"
