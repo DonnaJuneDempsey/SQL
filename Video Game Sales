@@ -1,0 +1,90 @@
+-- In this SQL, I'm querying a database with multiple tables in order to explore and prepare data for visualizations.
+
+SELECT *
+  FROM bit_db.GameSales
+ ORDER BY na_sales DESC;
+ 
+-- Looking at North American Sales vs Global Sales
+-- Shows the North American sales as a percentage of global sales for each title
+
+SELECT name, NA_sales, Global_sales, round((NA_sales/Global_sales)*100) as NAPercentage
+  FROM bit_db.GameSales;
+  
+-- Looking at Mario Titles in North America
+
+select count(name) as TotalMarioTitles
+    from bit_db.GameInfo
+    where name like "%Mario%";
+    
+-- Looking at Top 10 Mario Title sales across the world
+
+select * 
+    from bit_db.GameSales
+    where name like "%Mario%"
+    order by global_sales desc
+    limit 10;
+
+-- Looking at total worldwide sales for Mario titles
+
+select name, sum(global_sales) as WorldwideSales
+    from bit_db.GameSales
+    where name like "%Mario%"
+    group by name
+    order by sum(global_sales) desc;
+
+-- Looking at Nintendo Global sales
+    
+select info.name, info.publisher, info.year, info.genre, sales.global_sales
+    from bit_db.GameInfo info
+    join bit_db.GameSales sales
+    on info.name = sales.name
+    where info.publisher = "Nintendo"
+    order by sales.global_sales desc;
+    
+-- Looking at average sale for each NA title
+
+select (avg(na_sales)) as AvgNASales
+    from bit_db.GameSales;
+    
+-- Looking at titles with above average sales in North America
+
+select * 
+    from bit_db.GameSales
+    where NA_sales >= (select avg(NA_sales) from bit_db.GameSales)
+    order by na_sales desc;
+
+-- Looking at sales and game info joined
+
+select * 
+    from bit_db.GameInfo i
+    join bit_db.GameSales s
+    on i.name = s.name;
+    
+-- total sales for each publisher worldwide
+
+select info.publisher, sum(sales.global_sales) as TotalGlobalSales
+    from bit_db.GameInfo info
+    join bit_db.GameSales sales
+    on info.name = sales.name
+   group by info.publisher
+   order by TotalGlobalSales desc;
+   
+-- number of each genre released across all publishers
+
+select i.genre, count(i.genre) as TotalNumberReleased
+    from bit_db.GameInfo i
+    join bit_db.GameSales s
+    on i.name = s.name
+   group by i.genre
+   order by count(i.genre) desc;
+   
+-- highest rank achieved for each platform
+
+select name, platform, min(rank)
+    from bit_db.GameInfo
+    group by platform
+    order by rank asc;
+    
+
+
+
